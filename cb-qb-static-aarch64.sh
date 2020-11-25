@@ -3,14 +3,34 @@ set -e
 
 apk add bash bash-completion build-base curl pkgconf autoconf automake libtool git perl python3 python3-dev py3-numpy linux-headers
 
-OPENSSL_TAG=OpenSSL_1_1_1-stable
-QBITTORRENT_TAG=v4_3_x
-LIBTORRENT_TAG=RC_1_2
-ICU_TAG=68-1
-QT5_TAG=5.15
-BOOST_VER=1.72.0
+OPENSSL_TAG=OpenSSL_1_1_1h
+[ -n "$1" ] && QBITTORRENT_TAG="$1" || QBITTORRENT_TAG=v4_3_x
+LIBTORRENT_TAG=v1.2.11
+QT5_TAG=v5.15.1
+BOOST_VER=1.74.0
 BOOST_BUILD_TAG=boost-$BOOST_VER
 PATH=/usr/lib/ccache:$PATH
+
+[ -n "$2" -a "$2" = "reset" ] && {
+rm -rf work
+mkdir work
+cd work
+mkdir aarch64
+} || {
+[ -e work ] && cd work || echo "No work base, exit...";exit
+rm -rf qBittorrent/
+[ -e aarch64 ] || echo "No aarch64 base, exit...";exit
+}
+
+install_dir=`pwd`/aarch64
+include_dir="${install_dir}/include"
+lib_dir="${install_dir}/lib"
+
+PATH="${install_dir}/bin:${HOME}/bin${PATH:+:${PATH}}"
+LD_LIBRARY_PATH="-L${lib_dir}"
+PKG_CONFIG_PATH="-L${lib_dir}/pkgconfig"
+local_boost="--with-boost=${install_dir}"
+local_openssl="--with-openssl=${install_dir}"
 
 custom_flags_set() {
 	CXXFLAGS="-std=c++14"
@@ -26,24 +46,7 @@ custom_flags_reset() {
 
 custom_flags_reset
 
-rm -rf work
-mkdir work
-cd work
-mkdir aarch64
-#mkdir icupc
-
-install_dir=`pwd`/aarch64
-#icu_cb_dir=`pwd`/icupc
-## Set lib and include directory paths based on install path.
-include_dir="${install_dir}/include"
-lib_dir="${install_dir}/lib"
-#
-## Define some build specific variables
-PATH="${install_dir}/bin:${HOME}/bin${PATH:+:${PATH}}"
-LD_LIBRARY_PATH="-L${lib_dir}"
-PKG_CONFIG_PATH="-L${lib_dir}/pkgconfig"
-local_boost="--with-boost=${install_dir}"
-local_openssl="--with-openssl=${install_dir}"
+[ -n "$2" -a "$2" = "reset" ] && {
 
 #openssl
 git clone https://github.com/openssl/openssl.git --branch $OPENSSL_TAG --single-branch --depth 1
@@ -72,21 +75,6 @@ custom_flags_set
 ./bootstrap.sh
 ./b2 toolset=gcc-arm -j"$(nproc)" variant=release threading=multi link=static cxxflags=-std=c++14 cxxflags="${CXXFLAGS}" cflags="${CPPFLAGS}" linkflags="${LDFLAGS}" install --prefix="${install_dir}"
 cd ../..
-
-#icu
-#curl -fsSL "https://github.com/unicode-org/icu/releases/download/release-68-1/icu4c-68_1-src.tgz" | tar zxvf -
-#cd icu/source
-#custom_flags_reset
-#make clean
-#./configure --prefix="$icu_cb_dir" --disable-shared --enable-static CXXFLAGS="${CXXFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}"
-#make -j${nproc} VERBOSE=1 all
-#make install
-#make clean
-#custom_flags_set
-#./configure --with-cross-build="$icu_cb_dir" --host=aarch64-linux-musl --prefix="${install_dir}" --disable-shared --enable-static CXXFLAGS="${CXXFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}"
-#make -j${nproc} VERBOSE=1 all
-#make install
-#cd ../..
 
 #qtbase
 git clone https://github.com/qt/qtbase.git --branch $QT5_TAG --single-branch --depth 1
@@ -122,6 +110,7 @@ BOOST_ROOT="${install_dir}/boost" BOOST_INCLUDEDIR="${install_dir}/boost" BOOST_
 cd ..
 
 #echo "Done!" && exit
+}
 
 #qbittorrent
 git clone https://github.com/qbittorrent/qBittorrent.git --branch $QBITTORRENT_TAG --single-branch --depth 1
@@ -135,4 +124,5 @@ sed -i 's/-lboost_system//; s/-lcrypto//; s/-lssl//' conf.pri
 make -j$(nproc) VERBOSE=1 all
 aarch64-linux-musl-strip src/qbittorrent-nox
 file src/qbittorrent-nox
+src/qbittorrent-nox -v
 
