@@ -82,7 +82,6 @@ cd qtbase
 sed -i 's/aarch64-linux-gnu/aarch64-linux-musl/g' ./mkspecs/linux-aarch64-gnu-g++/qmake.conf
 [ -f config.cache ] && rm config.cache
 custom_flags_set
-./configure -xplatform linux-aarch64-gnu-g++ -prefix "${install_dir}" "${icu}" -opensource -confirm-license -release -openssl-linked -static -c++std c++14 -no-feature-c++17 -qt-pcre -no-iconv -no-feature-glib -no-feature-opengl -no-feature-dbus -no-feature-gui -no-feature-widgets -no-feature-testlib -no-compile-examples -I "$include_dir" -L "$lib_dir" QMAKE_LFLAGS="$LDFLAGS"
 ./configure -xplatform linux-aarch64-gnu-g++ -prefix "${install_dir}" -opensource -confirm-license -release -openssl-linked -static -c++std c++14 -no-feature-c++17 -qt-pcre -no-iconv -no-feature-glib -no-feature-opengl -no-feature-dbus -no-feature-gui -no-feature-widgets -no-feature-testlib -no-compile-examples -I "$include_dir" -L "$lib_dir" QMAKE_LFLAGS="$LDFLAGS"
 make -j$(nproc) VERBOSE=1 all
 make install
@@ -118,8 +117,6 @@ cd qBittorrent
 custom_flags_set
 ./bootstrap.sh
 ./configure --prefix="${install_dir}" "${local_boost}" --disable-gui --disable-qt-dbus --host=aarch64-linux-musl CXXFLAGS="${CXXFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS} -l:libboost_system.a" openssl_CFLAGS="-I${include_dir}" openssl_LIBS="-L${lib_dir} -l:libcrypto.a -l:libssl.a" libtorrent_CFLAGS="-I${include_dir}" libtorrent_LIBS="-L${lib_dir} -l:libtorrent.a" zlib_CFLAGS="-I${include_dir}" zlib_LIBS="-L${lib_dir} -l:libz.a" QT_QMAKE="${install_dir}/bin"
-#    ./configure --disable-gui --disable-qt-dbus --host=aarch64-linux-musl --with-boost-libdir=`pwd`/../arm/lib
-#sed -i 's/-lboost_system//; s/-lcrypto//; s/-lssl//; s/libssl.so/libssl.a/; s/libcrypto.so/libcrypto.a -ldl -lz' conf.pri
 sed -i 's/-lboost_system//; s/-lcrypto//; s/-lssl//' conf.pri
 make -j$(nproc) VERBOSE=1 all
 aarch64-linux-musl-strip src/qbittorrent-nox
