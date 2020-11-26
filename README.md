@@ -9,7 +9,7 @@ There is a bash script for cross-compile qbittorrent-nox static for armv7l and a
 Here is an example build profile:
 
 ```none
-qBittorrent 4.3.0.1 was built with the following libraries:
+qBittorrent 4.3.1 was built with the following libraries:
 
 Qt: 5.15.1
 Libtorrent: 1.2.11.0
@@ -61,7 +61,12 @@ apk add bash
 To execute the script use this command:
 
 ```bash
-~/qbittorrent-nox-static.sh
+~/cb-qb-static-aarch64.sh 4.3.1 reset
+```
+Here `4.3.1` is qBittorrent version, `reset` for first time compile or re-compile all modules. After a full compile, if you just want compile a new version of qBittorrent next time, use:
+
+```bash
+~/cb-qb-static-aarch64.sh new-version-number
 ```
 
 Supported modules
@@ -117,7 +122,7 @@ arm64:
 
 ```bash
 mkdir -p ~/bin && source ~/.profile
-wget -qO ~/bin/qbittorrent-nox https://github.com/rampageX/qbittorrent-nox-static-cross-compile/releases/download/4.3.0.1.2.10/arm64-musl-qbittorrent-nox
+wget -qO ~/bin/qbittorrent-nox https://github.com/rampageX/qbittorrent-nox-static-cross-compile/releases/download/4.3.1/aarch64-qbittorrent-nox
 chmod 700 ~/bin/qbittorrent-nox
 ```
 
