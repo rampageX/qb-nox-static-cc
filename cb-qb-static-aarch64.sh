@@ -4,7 +4,7 @@ set -e
 apk add bash bash-completion build-base curl pkgconf autoconf automake libtool git perl python3 python3-dev py3-numpy linux-headers
 
 OPENSSL_TAG=OpenSSL_1_1_1h
-[ -n "$1" ] && QBITTORRENT_TAG="$1" || QBITTORRENT_TAG=v4_3_x
+[ -n "$1" ] && QBITTORRENT_TAG="$1" || QBITTORRENT_TAG=4.3.1
 LIBTORRENT_TAG=v1.2.11
 QT5_TAG=v5.15.1
 BOOST_VER=1.74.0
@@ -113,7 +113,7 @@ cd ..
 }
 
 #qbittorrent
-git clone https://github.com/qbittorrent/qBittorrent.git --branch $QBITTORRENT_TAG --single-branch --depth 1
+git clone https://github.com/qbittorrent/qBittorrent.git --branch release-$QBITTORRENT_TAG --single-branch --depth 1
 cd qBittorrent
 custom_flags_set
 ./bootstrap.sh
