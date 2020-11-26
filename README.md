@@ -48,17 +48,21 @@ Fully static builds were built and tested on:
 
 Follow these instructions to install and use this build tool.
 
-**Note:** Executing the scripts will configure your build environment and may require a reboot to make sure you can successfully build `qbittorrent-nox` but will not start the build process until `all`  or a specific module name is passed as an argument to the script.
-
 Use these commands via `ssh` on your Linux platform.
 
-## For Alpine specifically, you need to install bash to use this script.
+### For Alpine specifically, you need to install bash to use this script.
 
 ```bash
 apk add bash
 ```
 
-To execute the script use this command:
+### Use [musl-cross-make](https://github.com/richfelker/musl-cross-make) build your aarch64/arm toolchain:
+
+`make aarch64-linux-musl; make install`
+
+`make arm-linux-musleabi; make install`
+
+### Then execute the script use this command:
 
 ```bash
 ~/cb-qb-static-aarch64.sh 4.3.1 reset
@@ -69,7 +73,7 @@ Here `4.3.1` is qBittorrent version, `reset` for first time compile or re-compil
 ~/cb-qb-static-aarch64.sh new-version-number
 ```
 
-Supported modules
+### Supported modules
 
 ```bash
 zlib (default)
