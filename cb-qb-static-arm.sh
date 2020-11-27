@@ -11,6 +11,8 @@ BOOST_VER=1.74.0
 BOOST_BUILD_TAG=boost-$BOOST_VER
 PATH=/usr/lib/ccache:$PATH
 
+result_dir="$(printf "%s" "$(pwd <(dirname "${0}"))")"
+
 [ -n "$2" -a "$2" = "reset" ] && {
 rm -rf work
 mkdir work
@@ -119,7 +121,7 @@ custom_flags_set
 ./configure --prefix="${install_dir}" "${local_boost}" --disable-gui --disable-qt-dbus --host=arm-linux-musleabi CXXFLAGS="${CXXFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS} -l:libboost_system.a" openssl_CFLAGS="-I${include_dir}" openssl_LIBS="-L${lib_dir} -l:libcrypto.a -l:libssl.a" libtorrent_CFLAGS="-I${include_dir}" libtorrent_LIBS="-L${lib_dir} -l:libtorrent.a" zlib_CFLAGS="-I${include_dir}" zlib_LIBS="-L${lib_dir} -l:libz.a" QT_QMAKE="${install_dir}/bin"
 sed -i 's/-lboost_system//; s/-lcrypto//; s/-lssl//' conf.pri
 make -j$(nproc) VERBOSE=1 all
-arm-linux-musleabi-strip src/qbittorrent-nox
-file src/qbittorrent-nox
-src/qbittorrent-nox -v
-
+cp src/qbittorrent-nox "${result_dir}/arm-qbittorrent-nox-${QBITTORRENT_TAG}"
+arm-linux-musleabi-strip "${result_dir}/arm-qbittorrent-nox-${QBITTORRENT_TAG}"
+file "${result_dir}/arm-qbittorrent-nox-${QBITTORRENT_TAG}"
+echo "Copy ${result_dir}/arm-qbittorrent-nox-${QBITTORRENT_TAG} to you arm5/arm7l device and test it."

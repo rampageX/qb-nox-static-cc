@@ -11,6 +11,8 @@ BOOST_VER=1.74.0
 BOOST_BUILD_TAG=boost-$BOOST_VER
 PATH=/usr/lib/ccache:$PATH
 
+result_dir="$(printf "%s" "$(pwd <(dirname "${0}"))")"
+
 [ -n "$2" -a "$2" = "reset" ] && {
 rm -rf work
 mkdir work
@@ -22,7 +24,7 @@ rm -rf qBittorrent/
 [ -e aarch64 ] || echo "No aarch64 base, exit...";exit
 }
 
-install_dir=`pwd`/aarch64
+install_dir="`pwd`/aarch64"
 include_dir="${install_dir}/include"
 lib_dir="${install_dir}/lib"
 
@@ -119,7 +121,7 @@ custom_flags_set
 ./configure --prefix="${install_dir}" "${local_boost}" --disable-gui --disable-qt-dbus --host=aarch64-linux-musl CXXFLAGS="${CXXFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS} -l:libboost_system.a" openssl_CFLAGS="-I${include_dir}" openssl_LIBS="-L${lib_dir} -l:libcrypto.a -l:libssl.a" libtorrent_CFLAGS="-I${include_dir}" libtorrent_LIBS="-L${lib_dir} -l:libtorrent.a" zlib_CFLAGS="-I${include_dir}" zlib_LIBS="-L${lib_dir} -l:libz.a" QT_QMAKE="${install_dir}/bin"
 sed -i 's/-lboost_system//; s/-lcrypto//; s/-lssl//' conf.pri
 make -j$(nproc) VERBOSE=1 all
-aarch64-linux-musl-strip src/qbittorrent-nox
-file src/qbittorrent-nox
-src/qbittorrent-nox -v
-
+cp src/qbittorrent-nox "${result_dir}/aarch64-qbittorrent-nox-${QBITTORRENT_TAG}"
+aarch64-linux-musl-strip "${result_dir}/aarch64-qbittorrent-nox-${QBITTORRENT_TAG}"
+file "${result_dir}/aarch64-qbittorrent-nox-${QBITTORRENT_TAG}"
+echo "Copy ${result_dir}/aarch64-qbittorrent-nox-${QBITTORRENT_TAG} to you aarch64 device and test it."
