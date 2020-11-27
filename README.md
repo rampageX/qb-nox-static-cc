@@ -26,16 +26,16 @@ See here for binaries I have built and how to install them - [Downloads](https:/
 
 `musl` - This script creates a fully static `qbittorrent-nox` binary using [musl](https://wiki.musl-libc.org/).
 
-The final result will show this when using `ldd`
+The final result will show this when using `file`
 
 ```bash
-ldd ~/qbittorrent-build/bin/qbittorrent-nox
+file ./aarch64-qbittorrent-nox-4.3.1
 ```
 
 Gives this result:
 
 ```bash
-statically linked
+./aarch64-qbittorrent-nox-4.3.1: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), statically linked, stripped
 ```
 
 ## Script information
