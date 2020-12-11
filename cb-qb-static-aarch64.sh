@@ -18,12 +18,12 @@ result_dir="$(printf "%s" "$(pwd <(dirname "${0}"))")"
     mkdir work
     cd work
     mkdir aarch64
+} || {
+    [ -e work ] && {
+        cd work
     } || {
-        [ -e work ] && {
-            cd work
-        } || {
-            echo "No work base, exit..."
-            exit
+        echo "No work base, exit..."
+        exit
     }
     rm -rf qBittorrent/
     [ -e aarch64 ] || {
