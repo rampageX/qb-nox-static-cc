@@ -14,14 +14,22 @@ PATH=/usr/lib/ccache:$PATH
 result_dir="$(printf "%s" "$(pwd <(dirname "${0}"))")"
 
 [ -n "$2" -a "$2" = "reset" ] && {
-rm -rf work
-mkdir work
-cd work
-mkdir arm
-} || {
-[ -e work ] && cd work || echo "No work base, exit...";exit
-rm -rf qBittorrent/
-[ -e arm ] || echo "No arm base, exit...";exit
+    rm -rf work
+    mkdir work
+    cd work
+    mkdir arm
+    } || {
+        [ -e work ] && {
+            cd work
+        } || {
+            echo "No work base, exit..."
+            exit
+    }
+    rm -rf qBittorrent/
+    [ -e arm ] || {
+        echo "No arm base, exit..."
+        exit
+    }
 }
 
 install_dir=`pwd`/arm

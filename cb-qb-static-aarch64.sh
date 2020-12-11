@@ -14,14 +14,22 @@ PATH=/usr/lib/ccache:$PATH
 result_dir="$(printf "%s" "$(pwd <(dirname "${0}"))")"
 
 [ -n "$2" -a "$2" = "reset" ] && {
-rm -rf work
-mkdir work
-cd work
-mkdir aarch64
-} || {
-[ -e work ] && cd work || echo "No work base, exit...";exit
-rm -rf qBittorrent/
-[ -e aarch64 ] || echo "No aarch64 base, exit...";exit
+    rm -rf work
+    mkdir work
+    cd work
+    mkdir aarch64
+    } || {
+        [ -e work ] && {
+            cd work
+        } || {
+            echo "No work base, exit..."
+            exit
+    }
+    rm -rf qBittorrent/
+    [ -e aarch64 ] || {
+        echo "No aarch64 base, exit..."
+        exit
+    }
 }
 
 install_dir="`pwd`/aarch64"
