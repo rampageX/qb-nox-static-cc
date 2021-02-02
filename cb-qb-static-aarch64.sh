@@ -1,14 +1,38 @@
 #! /usr/bin/env bash
+
+#libtorrent是qBittorrent必要的後端程序，對軟件性能有直接影響。
+
+#libtorrent 1.0.11: 非常穩定，適合長時間使用，但已經很舊了，不建議使用。
+#libtorrent 1.1.14: 性能更好，對高速種子比較友好，非常穩定，適合長時間使用，建議使用。
+#libtorrent 1.2.10: 沒用過，但是小問題應該也修得差不多了，是qBittorrent4.3.0的默認版本
+#libtorrent 2.0   : 沒用過，應該不穩定，不建議使用
+
+#libtorrent 1.0.11: 適用於qBittorrent3.3.11-4.1.3
+#libtorrent 1.1.14: 適用於qBittorrent4.0.0或更新版本
+#libtorrent 1.2.10 : 適用於qBittorrent4.2.0或更新版本
+
+#qBittorrent 4.1.4或更新版本: 要求libtorrent ≥ 1.1.10
+#qBittorrent 4.3.0或更新版本: 要求libtorrent ≥ 1.2.0
+
+#下面請根據qBittorrent版本安裝所需的libtorrent，如果看不懂的話：
+#如果你想安裝qBittorrent4.0.0-4.2.5，請安裝libtorrent 1.1.14
+#如果你想安裝qBittorrent4.3.0或更新版本，請安裝libtorrent 1.2.11
+#如果你想安裝qBittorrent4.3.3或更新版本，請安裝libtorrent 1.2.12
+
+# 4.3.3 以上需要 C++17，其它 C++14
+
 set -e
 
-apk add bash bash-completion build-base curl pkgconf autoconf automake libtool git perl python3 python3-dev py3-numpy linux-headers
+apk add bash bash-completion build-base curl pkgconf autoconf automake libtool git perl python2 python2-dev python3 python3-dev py3-numpy linux-headers
 
-OPENSSL_TAG=OpenSSL_1_1_1h
-[ -n "$1" ] && QBITTORRENT_TAG="$1" || QBITTORRENT_TAG=4.3.1
-LIBTORRENT_TAG=v1.2.11
-QT5_TAG=v5.15.1
-BOOST_VER=1.74.0
+OPENSSL_TAG=OpenSSL_1_1_1i
+[ -n "$1" ] && QBITTORRENT_TAG="$1" || QBITTORRENT_TAG=4.3.3
+IS_PT_VER=$(awk 'BEGIN{ print "'$QBITTORRENT_TAG'"<"'4.2'" }')
+[ "$IS_PT_VER" -eq 1 ] && LIBTORRENT_TAG=libtorrent-1_1_14 || LIBTORRENT_TAG=v1.2.12
+QT5_TAG=v5.15.2
+BOOST_VER=1.75.0
 BOOST_BUILD_TAG=boost-$BOOST_VER
+STANDARD="c++17"
 PATH=/usr/lib/ccache:$PATH
 
 result_dir="$(printf "%s" "$(pwd <(dirname "${0}"))")"
@@ -26,6 +50,7 @@ result_dir="$(printf "%s" "$(pwd <(dirname "${0}"))")"
         exit
     }
     rm -rf qBittorrent/
+    rm -rf libtorrent/
     [ -e aarch64 ] || {
         echo "No aarch64 base, exit..."
         exit
@@ -43,15 +68,15 @@ local_boost="--with-boost=${install_dir}"
 local_openssl="--with-openssl=${install_dir}"
 
 custom_flags_set() {
-	CXXFLAGS="-std=c++14"
-	CPPFLAGS="--static -static -I${include_dir}"
-	LDFLAGS="--static -static -Wl,--no-as-needed -L${lib_dir} -lpthread -pthread"
+    CXXFLAGS="-std=${STANDARD}"
+    CPPFLAGS="--static -static -I${include_dir}"
+    LDFLAGS="--static -static -Wl,--no-as-needed -L${lib_dir} -lpthread -pthread"
 }
 
 custom_flags_reset() {
-	CXXFLAGS="-std=c++14"
-	CPPFLAGS=""
-	LDFLAGS=""
+    CXXFLAGS="-std=${STANDARD}"
+    CPPFLAGS=""
+    LDFLAGS=""
 }
 
 custom_flags_reset
@@ -80,10 +105,10 @@ cd ..
 git clone --recursive --single-branch --branch boost-$BOOST_VER --depth=1 -j$(nproc) --shallow-submodules https://github.com/boostorg/boost.git
 mv boost/ "${install_dir}/boost"
 cd "${install_dir}/boost"
-echo "using gcc : arm : /opt/cross/bin/aarch64-linux-musl-g++ ;" > ~/user-config.jam
+echo "using gcc : aarch64 : /opt/cross/bin/aarch64-linux-musl-g++ ;" > ~/user-config.jam
 custom_flags_set
 ./bootstrap.sh
-./b2 toolset=gcc-arm -j"$(nproc)" variant=release threading=multi link=static cxxflags=-std=c++14 cxxflags="${CXXFLAGS}" cflags="${CPPFLAGS}" linkflags="${LDFLAGS}" install --prefix="${install_dir}"
+./b2 toolset=gcc-aarch64 -j"$(nproc)" variant=release threading=multi link=static cxxflags=-std=c++14 cxxflags="${CXXFLAGS}" cflags="${CPPFLAGS}" linkflags="${LDFLAGS}" install --prefix="${install_dir}"
 cd ../..
 
 #qtbase
@@ -107,21 +132,23 @@ BOOST_ROOT="${install_dir}/boost"
 make -j$(nproc) VERBOSE=1 all
 make install
 cd ..
+}
 
 #libtorrent
 rm -rf libtorrent
 git clone https://github.com/arvidn/libtorrent.git --branch $LIBTORRENT_TAG --single-branch --depth 1
 cd libtorrent
-echo "using gcc : arm : /opt/cross/bin/aarch64-linux-musl-g++ ;" > ~/user-config.jam
+echo "using gcc : aarch64 : /opt/cross/bin/aarch64-linux-musl-g++ ;" > ~/user-config.jam
 #edit Jamfile ---> 	local boost-include-path =
 custom_flags_set
-BOOST_ROOT="${install_dir}/boost" BOOST_INCLUDEDIR="${install_dir}/boost" BOOST_BUILD_PATH="${install_dir}/boost" "${install_dir}/boost/b2" -j"$(nproc)" toolset=gcc-arm dht=on encryption=on crypto=openssl i2p=on extensions=on variant=release threading=multi link=static boost-link=static runtime-link=static cxxflags="${CXXFLAGS}" cflags="${CPPFLAGS}" linkflags="${LDFLAGS}" install --prefix="${install_dir}"
+BOOST_ROOT="${install_dir}/boost" BOOST_INCLUDEDIR="${install_dir}/boost" BOOST_BUILD_PATH="${install_dir}/boost" "${install_dir}/boost/b2" -j"$(nproc)" toolset=gcc-aarch64 dht=on encryption=on crypto=openssl i2p=on extensions=on variant=release threading=multi link=static boost-link=static runtime-link=static cxxflags="${CXXFLAGS}" cflags="${CPPFLAGS}" linkflags="${LDFLAGS}" install --prefix="${install_dir}"
 cd ..
 
 #echo "Done!" && exit
-}
+
 
 #qbittorrent
+#rm -rf qBittorrent
 git clone https://github.com/qbittorrent/qBittorrent.git --branch release-$QBITTORRENT_TAG --single-branch --depth 1
 cd qBittorrent
 custom_flags_set

@@ -1,5 +1,7 @@
 # qbittorrent-nox-static-cross-compile
 
+You can download Enhanced-Edition from here:  [qBittorrent-Enhanced-Edition/releases](https://github.com/c0re100/qBittorrent-Enhanced-Edition/releases)
+
 There is a bash script for cross-compile qbittorrent-nox static for armv7l and aarch64 on Alpine 3.12, based on [musl-cross-make](https://github.com/richfelker/musl-cross-make) and [qbittorrent-nox-static](https://github.com/userdocs/qbittorrent-nox-static) :
 
 -   Update the system and install the core build dependencies - Requires root privileges if dependencies are not present.
@@ -9,12 +11,12 @@ There is a bash script for cross-compile qbittorrent-nox static for armv7l and a
 Here is an example build profile:
 
 ```none
-qBittorrent 4.3.1 was built with the following libraries:
+qBittorrent 4.3.3 was built with the following libraries:
 
-Qt: 5.15.1
-Libtorrent: 1.2.11.0
-Boost: 1.74.0
-OpenSSL: 1.1.1h
+Qt: 5.15.2
+Libtorrent: 1.2.12.0
+Boost: 1.75.0
+OpenSSL: 1.1.1i
 zlib: 1.2.11
 ```
 
