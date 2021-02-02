@@ -58,9 +58,9 @@ apk add bash
 
 ### Use [musl-cross-make](https://github.com/richfelker/musl-cross-make) build your aarch64/arm toolchain:
 
-`make TARGET=aarch64-linux-musl; make install`
+`Edit config.mak, use TARGET=aarch64-linux-musl then make install`
 
-`make TARGET=arm-linux-musleabi; make install`
+`Edit config.mak, use TARGET=arm-linux-musl then make install`
 
 ### Then execute the script use this command:
 
