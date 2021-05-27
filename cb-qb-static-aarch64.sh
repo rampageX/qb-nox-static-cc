@@ -25,12 +25,14 @@ set -e
 
 apk add bash bash-completion build-base curl pkgconf autoconf automake libtool git perl python2 python2-dev python3 python3-dev py3-numpy linux-headers
 
-OPENSSL_TAG=OpenSSL_1_1_1i
-[ -n "$1" ] && QBITTORRENT_TAG="$1" || QBITTORRENT_TAG=4.3.3
+OPENSSL_TAG=OpenSSL_1_1_1k
+[ -n "$1" ] && QBITTORRENT_TAG="$1" || QBITTORRENT_TAG=4.3.5
 IS_PT_VER=$(awk 'BEGIN{ print "'$QBITTORRENT_TAG'"<"'4.2'" }')
-[ "$IS_PT_VER" -eq 1 ] && LIBTORRENT_TAG=libtorrent-1_1_14 || LIBTORRENT_TAG=v1.2.12
+HIGH_PT_VER=$(awk 'BEGIN{ print "'$QBITTORRENT_TAG'"<"'4.3.4'" }')
+[ "$IS_PT_VER" -eq 1 ] && LIBTORRENT_TAG=libtorrent-1_1_14 || LIBTORRENT_TAG=v1.2.13
+[ "$HIGH_PT_VER" -eq 0 ] && LIBTORRENT_STATIC_FILE="libtorrent-rasterbar.a" || LIBTORRENT_STATIC_FILE="libtorrent.a"
 QT5_TAG=v5.15.2
-BOOST_VER=1.75.0
+BOOST_VER=1.76.0
 BOOST_BUILD_TAG=boost-$BOOST_VER
 STANDARD="c++17"
 PATH=/usr/lib/ccache:$PATH
@@ -153,7 +155,7 @@ git clone https://github.com/qbittorrent/qBittorrent.git --branch release-$QBITT
 cd qBittorrent
 custom_flags_set
 ./bootstrap.sh
-./configure --prefix="${install_dir}" "${local_boost}" --disable-gui --disable-qt-dbus --host=aarch64-linux-musl CXXFLAGS="${CXXFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS} -l:libboost_system.a" openssl_CFLAGS="-I${include_dir}" openssl_LIBS="-L${lib_dir} -l:libcrypto.a -l:libssl.a" libtorrent_CFLAGS="-I${include_dir}" libtorrent_LIBS="-L${lib_dir} -l:libtorrent.a" zlib_CFLAGS="-I${include_dir}" zlib_LIBS="-L${lib_dir} -l:libz.a" QT_QMAKE="${install_dir}/bin"
+./configure --prefix="${install_dir}" "${local_boost}" --disable-gui --disable-qt-dbus --host=aarch64-linux-musl CXXFLAGS="${CXXFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS} -l:libboost_system.a" openssl_CFLAGS="-I${include_dir}" openssl_LIBS="-L${lib_dir} -l:libcrypto.a -l:libssl.a" libtorrent_CFLAGS="-I${include_dir}" libtorrent_LIBS="-L${lib_dir} -l:${LIBTORRENT_STATIC_FILE}" zlib_CFLAGS="-I${include_dir}" zlib_LIBS="-L${lib_dir} -l:libz.a" QT_QMAKE="${install_dir}/bin"
 sed -i 's/-lboost_system//; s/-lcrypto//; s/-lssl//' conf.pri
 make -j$(nproc) VERBOSE=1 all
 cp src/qbittorrent-nox "${result_dir}/aarch64-qbittorrent-nox-${QBITTORRENT_TAG}"
