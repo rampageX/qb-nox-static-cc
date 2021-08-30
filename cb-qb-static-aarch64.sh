@@ -1,38 +1,38 @@
 #! /usr/bin/env bash
 
-#libtorrentÊÇqBittorrent±ØÒªµÄáá¶Ë³ÌĞò£¬Œ¦Ü›¼şĞÔÄÜÓĞÖ±½ÓÓ°í‘¡£
+#libtorrentæ˜¯qBittorrentå¿…è¦çš„åç«¯ç¨‹åºï¼Œå¯¹è½¯ä»¶æ€§èƒ½æœ‰ç›´æ¥å½±å“ã€‚
 
-#libtorrent 1.0.11: ·Ç³£·€¶¨£¬ßmºÏéL•régÊ¹ÓÃ£¬µ«ÒÑ½›ºÜÅfÁË£¬²»½¨×hÊ¹ÓÃ¡£
-#libtorrent 1.1.14: ĞÔÄÜ¸üºÃ£¬Œ¦¸ßËÙ·N×Ó±Èİ^ÓÑºÃ£¬·Ç³£·€¶¨£¬ßmºÏéL•régÊ¹ÓÃ£¬½¨×hÊ¹ÓÃ¡£
-#libtorrent 1.2.10: ›]ÓÃß^£¬µ«ÊÇĞ¡†–î}‘ªÔ“Ò²ĞŞµÃ²î²»¶àÁË£¬ÊÇqBittorrent4.3.0µÄÄ¬ÕJ°æ±¾
-#libtorrent 2.0   : ›]ÓÃß^£¬‘ªÔ“²»·€¶¨£¬²»½¨×hÊ¹ÓÃ
+#libtorrent 1.0.11: éå¸¸ç¨³å®šï¼Œé€‚åˆé•¿æ—¶é—´ä½¿ç”¨ï¼Œä½†å·²ç»å¾ˆæ—§äº†ï¼Œä¸å»ºè®®ä½¿ç”¨ã€‚
+#libtorrent 1.1.14: æ€§èƒ½æ›´å¥½ï¼Œå¯¹é«˜é€Ÿç§å­æ¯”è¾ƒå‹å¥½ï¼Œéå¸¸ç¨³å®šï¼Œé€‚åˆé•¿æ—¶é—´ä½¿ç”¨ï¼Œå»ºè®®ä½¿ç”¨ã€‚
+#libtorrent 1.2.10: æ²¡ç”¨è¿‡ï¼Œä½†æ˜¯å°é—®é¢˜åº”è¯¥ä¹Ÿä¿®å¾—å·®ä¸å¤šäº†ï¼Œæ˜¯qBittorrent4.3.0çš„é»˜è®¤ç‰ˆæœ¬
+#libtorrent 2.0   : æ²¡ç”¨è¿‡ï¼Œåº”è¯¥ä¸ç¨³å®šï¼Œä¸å»ºè®®ä½¿ç”¨
 
-#libtorrent 1.0.11: ßmÓÃì¶qBittorrent3.3.11-4.1.3
-#libtorrent 1.1.14: ßmÓÃì¶qBittorrent4.0.0»ò¸üĞÂ°æ±¾
-#libtorrent 1.2.10 : ßmÓÃì¶qBittorrent4.2.0»ò¸üĞÂ°æ±¾
+#libtorrent 1.0.11: é€‚ç”¨äºqBittorrent3.3.11-4.1.3
+#libtorrent 1.1.14: é€‚ç”¨äºqBittorrent4.0.0æˆ–æ›´æ–°ç‰ˆæœ¬
+#libtorrent 1.2.10 : é€‚ç”¨äºqBittorrent4.2.0æˆ–æ›´æ–°ç‰ˆæœ¬
 
-#qBittorrent 4.1.4»ò¸üĞÂ°æ±¾: ÒªÇólibtorrent ¡İ 1.1.10
-#qBittorrent 4.3.0»ò¸üĞÂ°æ±¾: ÒªÇólibtorrent ¡İ 1.2.0
+#qBittorrent 4.1.4æˆ–æ›´æ–°ç‰ˆæœ¬: è¦æ±‚libtorrent â‰¥ 1.1.10
+#qBittorrent 4.3.0æˆ–æ›´æ–°ç‰ˆæœ¬: è¦æ±‚libtorrent â‰¥ 1.2.0
 
-#ÏÂÃæÕˆ¸ù“şqBittorrent°æ±¾°²ÑbËùĞèµÄlibtorrent£¬Èç¹û¿´²»¶®µÄÔ’£º
-#Èç¹ûÄãÏë°²ÑbqBittorrent4.0.0-4.2.5£¬Õˆ°²Ñblibtorrent 1.1.14
-#Èç¹ûÄãÏë°²ÑbqBittorrent4.3.0»ò¸üĞÂ°æ±¾£¬Õˆ°²Ñblibtorrent 1.2.11
-#Èç¹ûÄãÏë°²ÑbqBittorrent4.3.3»ò¸üĞÂ°æ±¾£¬Õˆ°²Ñblibtorrent 1.2.12
+#ä¸‹é¢è¯·æ ¹æ®qBittorrentç‰ˆæœ¬å®‰è£…æ‰€éœ€çš„libtorrentï¼Œå¦‚æœçœ‹ä¸æ‡‚çš„è¯ï¼š
+#å¦‚æœä½ æƒ³å®‰è£…qBittorrent4.0.0-4.2.5ï¼Œè¯·å®‰è£…libtorrent 1.1.14
+#å¦‚æœä½ æƒ³å®‰è£…qBittorrent4.3.0æˆ–æ›´æ–°ç‰ˆæœ¬ï¼Œè¯·å®‰è£…libtorrent 1.2.11
+#å¦‚æœä½ æƒ³å®‰è£…qBittorrent4.3.3æˆ–æ›´æ–°ç‰ˆæœ¬ï¼Œè¯·å®‰è£…libtorrent 1.2.12
 
-# 4.3.3 ÒÔÉÏĞèÒª C++17£¬ÆäËü C++14
+# 4.3.3 ä»¥ä¸Šéœ€è¦ C++17ï¼Œå…¶å®ƒ C++14
 
 set -e
 
 apk add bash bash-completion build-base curl pkgconf autoconf automake libtool git perl python2 python2-dev python3 python3-dev py3-numpy linux-headers
 
-OPENSSL_TAG=OpenSSL_1_1_1k
-[ -n "$1" ] && QBITTORRENT_TAG="$1" || QBITTORRENT_TAG=4.3.5
+OPENSSL_TAG=OpenSSL_1_1_1l
+[ -n "$1" ] && QBITTORRENT_TAG="$1" || QBITTORRENT_TAG=4.3.7
 IS_PT_VER=$(awk 'BEGIN{ print "'$QBITTORRENT_TAG'"<"'4.2'" }')
 HIGH_PT_VER=$(awk 'BEGIN{ print "'$QBITTORRENT_TAG'"<"'4.3.4'" }')
-[ "$IS_PT_VER" -eq 1 ] && LIBTORRENT_TAG=libtorrent-1_1_14 || LIBTORRENT_TAG=v1.2.13
+[ "$IS_PT_VER" -eq 1 ] && LIBTORRENT_TAG=libtorrent-1_1_14 || LIBTORRENT_TAG=v1.2.14
 [ "$HIGH_PT_VER" -eq 0 ] && LIBTORRENT_STATIC_FILE="libtorrent-rasterbar.a" || LIBTORRENT_STATIC_FILE="libtorrent.a"
 QT5_TAG=v5.15.2
-BOOST_VER=1.76.0
+BOOST_VER=1.77.0
 BOOST_BUILD_TAG=boost-$BOOST_VER
 STANDARD="c++17"
 PATH=/usr/lib/ccache:$PATH
@@ -162,3 +162,4 @@ cp src/qbittorrent-nox "${result_dir}/aarch64-qbittorrent-nox-${QBITTORRENT_TAG}
 aarch64-linux-musl-strip "${result_dir}/aarch64-qbittorrent-nox-${QBITTORRENT_TAG}"
 file "${result_dir}/aarch64-qbittorrent-nox-${QBITTORRENT_TAG}"
 echo "Copy ${result_dir}/aarch64-qbittorrent-nox-${QBITTORRENT_TAG} to you aarch64 device and test it."
+tar czvf ${result_dir}/aarch64-qbittorrent-nox-${QBITTORRENT_TAG}.tar.gz ${result_dir}/aarch64-qbittorrent-nox-${QBITTORRENT_TAG}

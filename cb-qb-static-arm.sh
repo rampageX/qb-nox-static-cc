@@ -1,38 +1,38 @@
 #! /usr/bin/env bash
 
-#libtorrentÊÇqBittorrent±ØÒªµÄáá¶Ë³ÌĞò£¬Œ¦Ü›¼şĞÔÄÜÓĞÖ±½ÓÓ°í‘¡£
+#libtorrentæ˜¯qBittorrentå¿…è¦çš„åç«¯ç¨‹åºï¼Œå¯¹è½¯ä»¶æ€§èƒ½æœ‰ç›´æ¥å½±å“ã€‚
 
-#libtorrent 1.0.11: ·Ç³£·€¶¨£¬ßmºÏéL•régÊ¹ÓÃ£¬µ«ÒÑ½›ºÜÅfÁË£¬²»½¨×hÊ¹ÓÃ¡£
-#libtorrent 1.1.14: ĞÔÄÜ¸üºÃ£¬Œ¦¸ßËÙ·N×Ó±Èİ^ÓÑºÃ£¬·Ç³£·€¶¨£¬ßmºÏéL•régÊ¹ÓÃ£¬½¨×hÊ¹ÓÃ¡£
-#libtorrent 1.2.10: ›]ÓÃß^£¬µ«ÊÇĞ¡†–î}‘ªÔ“Ò²ĞŞµÃ²î²»¶àÁË£¬ÊÇqBittorrent4.3.0µÄÄ¬ÕJ°æ±¾
-#libtorrent 2.0   : ›]ÓÃß^£¬‘ªÔ“²»·€¶¨£¬²»½¨×hÊ¹ÓÃ
+#libtorrent 1.0.11: éå¸¸ç¨³å®šï¼Œé€‚åˆé•¿æ—¶é—´ä½¿ç”¨ï¼Œä½†å·²ç»å¾ˆæ—§äº†ï¼Œä¸å»ºè®®ä½¿ç”¨ã€‚
+#libtorrent 1.1.14: æ€§èƒ½æ›´å¥½ï¼Œå¯¹é«˜é€Ÿç§å­æ¯”è¾ƒå‹å¥½ï¼Œéå¸¸ç¨³å®šï¼Œé€‚åˆé•¿æ—¶é—´ä½¿ç”¨ï¼Œå»ºè®®ä½¿ç”¨ã€‚
+#libtorrent 1.2.10: æ²¡ç”¨è¿‡ï¼Œä½†æ˜¯å°é—®é¢˜åº”è¯¥ä¹Ÿä¿®å¾—å·®ä¸å¤šäº†ï¼Œæ˜¯qBittorrent4.3.0çš„é»˜è®¤ç‰ˆæœ¬
+#libtorrent 2.0   : æ²¡ç”¨è¿‡ï¼Œåº”è¯¥ä¸ç¨³å®šï¼Œä¸å»ºè®®ä½¿ç”¨
 
-#libtorrent 1.0.11: ßmÓÃì¶qBittorrent3.3.11-4.1.3
-#libtorrent 1.1.14: ßmÓÃì¶qBittorrent4.0.0»ò¸üĞÂ°æ±¾
-#libtorrent 1.2.10 : ßmÓÃì¶qBittorrent4.2.0»ò¸üĞÂ°æ±¾
+#libtorrent 1.0.11: é€‚ç”¨äºqBittorrent3.3.11-4.1.3
+#libtorrent 1.1.14: é€‚ç”¨äºqBittorrent4.0.0æˆ–æ›´æ–°ç‰ˆæœ¬
+#libtorrent 1.2.10 : é€‚ç”¨äºqBittorrent4.2.0æˆ–æ›´æ–°ç‰ˆæœ¬
 
-#qBittorrent 4.1.4»ò¸üĞÂ°æ±¾: ÒªÇólibtorrent ¡İ 1.1.10
-#qBittorrent 4.3.0»ò¸üĞÂ°æ±¾: ÒªÇólibtorrent ¡İ 1.2.0
+#qBittorrent 4.1.4æˆ–æ›´æ–°ç‰ˆæœ¬: è¦æ±‚libtorrent â‰¥ 1.1.10
+#qBittorrent 4.3.0æˆ–æ›´æ–°ç‰ˆæœ¬: è¦æ±‚libtorrent â‰¥ 1.2.0
 
-#ÏÂÃæÕˆ¸ù“şqBittorrent°æ±¾°²ÑbËùĞèµÄlibtorrent£¬Èç¹û¿´²»¶®µÄÔ’£º
-#Èç¹ûÄãÏë°²ÑbqBittorrent4.0.0-4.2.5£¬Õˆ°²Ñblibtorrent 1.1.14
-#Èç¹ûÄãÏë°²ÑbqBittorrent4.3.0»ò¸üĞÂ°æ±¾£¬Õˆ°²Ñblibtorrent 1.2.11
-#Èç¹ûÄãÏë°²ÑbqBittorrent4.3.3»ò¸üĞÂ°æ±¾£¬Õˆ°²Ñblibtorrent 1.2.12
+#ä¸‹é¢è¯·æ ¹æ®qBittorrentç‰ˆæœ¬å®‰è£…æ‰€éœ€çš„libtorrentï¼Œå¦‚æœçœ‹ä¸æ‡‚çš„è¯ï¼š
+#å¦‚æœä½ æƒ³å®‰è£…qBittorrent4.0.0-4.2.5ï¼Œè¯·å®‰è£…libtorrent 1.1.14
+#å¦‚æœä½ æƒ³å®‰è£…qBittorrent4.3.0æˆ–æ›´æ–°ç‰ˆæœ¬ï¼Œè¯·å®‰è£…libtorrent 1.2.11
+#å¦‚æœä½ æƒ³å®‰è£…qBittorrent4.3.3æˆ–æ›´æ–°ç‰ˆæœ¬ï¼Œè¯·å®‰è£…libtorrent 1.2.12
 
-# 4.3.3 ÒÔÉÏĞèÒª C++17£¬ÆäËü C++14
+# 4.3.3 ä»¥ä¸Šéœ€è¦ C++17ï¼Œå…¶å®ƒ C++14
 
 set -e
 
 apk add bash bash-completion build-base curl pkgconf autoconf automake libtool git perl python2 python2-dev python3 python3-dev py3-numpy linux-headers
 
-OPENSSL_TAG=OpenSSL_1_1_1k
-[ -n "$1" ] && QBITTORRENT_TAG="$1" || QBITTORRENT_TAG=4.3.5
+OPENSSL_TAG=OpenSSL_1_1_1l
+[ -n "$1" ] && QBITTORRENT_TAG="$1" || QBITTORRENT_TAG=4.3.8
 IS_PT_VER=$(awk 'BEGIN{ print "'$QBITTORRENT_TAG'"<"'4.2'" }')
 HIGH_PT_VER=$(awk 'BEGIN{ print "'$QBITTORRENT_TAG'"<"'4.3.4'" }')
 [ "$IS_PT_VER" -eq 1 ] && LIBTORRENT_TAG=libtorrent-1_1_14 || LIBTORRENT_TAG=v1.2.13
 [ "$HIGH_PT_VER" -eq 0 ] && LIBTORRENT_STATIC_FILE="libtorrent-rasterbar.a" || LIBTORRENT_STATIC_FILE="libtorrent.a"
 QT5_TAG=v5.15.2
-BOOST_VER=1.76.0
+BOOST_VER=1.77.0
 BOOST_BUILD_TAG=boost-$BOOST_VER
 STANDARD="c++17"
 PATH=/usr/lib/ccache:$PATH
@@ -86,40 +86,49 @@ custom_flags_reset
 [ -n "$2" -a "$2" = "reset" ] && {
 
 #openssl
+rm -rf openssl/ > /dev/null 2>&1
 git clone https://github.com/openssl/openssl.git --branch $OPENSSL_TAG --single-branch --depth 1
 cd openssl
 custom_flags_set
-./Configure linux-arm --cross-compile-prefix=arm-linux-musl- --prefix="${install_dir}" threads no-shared no-dso no-comp CXXFLAGS="${CXXFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}"
+./Configure linux-armv4 --cross-compile-prefix=arm-linux-musleabi- --prefix="${install_dir}" threads no-shared no-dso no-comp CXXFLAGS="${CXXFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}"
 make -j${nproc}
 make install_sw install_ssldirs
 cd ..
 
 #zlib
+rm -rf zlib/ > /dev/null 2>&1
 git clone https://github.com/madler/zlib.git
 cd zlib
 custom_flags_set
-CC=arm-linux-musl-gcc ./configure --prefix="${install_dir}" --static
+CC=arm-linux-musleabi-gcc ./configure --prefix="${install_dir}" --static
 make -j"$(nproc)" CXXFLAGS="${CXXFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS}"
 make install
 cd ..
 
+
 #boost
+rm -rf boost/ > /dev/null 2>&1
+rm -rf "${install_dir}/boost/" > /dev/null 2>&1
 git clone --recursive --single-branch --branch boost-$BOOST_VER --depth=1 -j$(nproc) --shallow-submodules https://github.com/boostorg/boost.git
-mv boost/ "${install_dir}/boost"
+mv -f boost/ "${install_dir}/boost"
+#tar xvf "${result_dir}"/boost_1_77_0.tar.gz
+#mv -f boost_1_77_0/ "${install_dir}/boost"
 cd "${install_dir}/boost"
-echo "using gcc : arm : /opt/cross/bin/arm-linux-musl-g++ ;" > ~/user-config.jam
+echo "using gcc : arm : /opt/cross/bin/arm-linux-musleabi-g++ ;" > ~/user-config.jam
 custom_flags_set
 ./bootstrap.sh
-./b2 toolset=gcc-arm -j"$(nproc)" variant=release threading=multi link=static cxxflags=-std=c++14 cxxflags="${CXXFLAGS}" cflags="${CPPFLAGS}" linkflags="${LDFLAGS}" install --prefix="${install_dir}"
+./b2 --without-atomic --without-math --without-context --without-coroutine --without-fiber --without-python --without-graph_parallel --without-mpi toolset=gcc-arm -j"$(nproc)" variant=release threading=multi link=static cxxflags="${CXXFLAGS}" cflags="${CPPFLAGS}" linkflags="${LDFLAGS}" install --prefix="${install_dir}"
 cd ../..
 
+
 #qtbase
+rm -rf qtbase/ > /dev/null 2>&1
 git clone https://github.com/qt/qtbase.git --branch $QT5_TAG --single-branch --depth 1
 cd qtbase
-sed -i 's/arm-linux-gnu/arm-linux-musl/g' ./mkspecs/linux-arm-gnu-g++/qmake.conf
+sed -i 's/arm-linux-gnu/arm-linux-musleabi/g' ./mkspecs/linux-arm-gnueabi-g++/qmake.conf
 [ -f config.cache ] && rm config.cache
 custom_flags_set
-./configure -xplatform linux-arm-gnu-g++ -prefix "${install_dir}" -opensource -confirm-license -release -openssl-linked -static -c++std c++14 -no-feature-c++17 -qt-pcre -no-iconv -no-feature-glib -no-feature-opengl -no-feature-dbus -no-feature-gui -no-feature-widgets -no-feature-testlib -no-compile-examples -I "$include_dir" -L "$lib_dir" QMAKE_LFLAGS="$LDFLAGS"
+./configure -xplatform linux-arm-gnueabi-g++ -prefix "${install_dir}" -opensource -confirm-license -release -openssl-linked -static -c++std c++14 -no-feature-c++17 -qt-pcre -no-iconv -no-feature-glib -no-feature-opengl -no-feature-dbus -no-feature-gui -no-feature-widgets -no-feature-testlib -no-compile-examples -I "$include_dir" -L "$lib_dir" QMAKE_LFLAGS="$LDFLAGS"
 make -j$(nproc) VERBOSE=1 all
 make install
 cd ..
@@ -134,31 +143,32 @@ BOOST_ROOT="${install_dir}/boost"
 make -j$(nproc) VERBOSE=1 all
 make install
 cd ..
-}
 
 #libtorrent
-rm -rf libtorrent
+rm -rf libtorrent > /dev/null 2>&1
 git clone https://github.com/arvidn/libtorrent.git --branch $LIBTORRENT_TAG --single-branch --depth 1
 cd libtorrent
-echo "using gcc : arm : /opt/cross/bin/arm-linux-musl-g++ ;" > ~/user-config.jam
+echo "using gcc : arm : /opt/cross/bin/arm-linux-musleabi-g++ ;" > ~/user-config.jam
 #edit Jamfile ---> 	local boost-include-path =
 custom_flags_set
 BOOST_ROOT="${install_dir}/boost" BOOST_INCLUDEDIR="${install_dir}/boost" BOOST_BUILD_PATH="${install_dir}/boost" "${install_dir}/boost/b2" -j"$(nproc)" toolset=gcc-arm dht=on encryption=on crypto=openssl i2p=on extensions=on variant=release threading=multi link=static boost-link=static runtime-link=static cxxflags="${CXXFLAGS}" cflags="${CPPFLAGS}" linkflags="${LDFLAGS}" install --prefix="${install_dir}"
 cd ..
 
+}
+
 #echo "Done!" && exit
 
-
 #qbittorrent
-#rm -rf qBittorrent
+rm -rf qBittorrent > /dev/null 2>&1
 git clone https://github.com/qbittorrent/qBittorrent.git --branch release-$QBITTORRENT_TAG --single-branch --depth 1
 cd qBittorrent
 custom_flags_set
 ./bootstrap.sh
-./configure --prefix="${install_dir}" "${local_boost}" --disable-gui --disable-qt-dbus --host=arm-linux-musl CXXFLAGS="${CXXFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS} -l:libboost_system.a" openssl_CFLAGS="-I${include_dir}" openssl_LIBS="-L${lib_dir} -l:libcrypto.a -l:libssl.a" libtorrent_CFLAGS="-I${include_dir}" libtorrent_LIBS="-L${lib_dir} -l:${LIBTORRENT_STATIC_FILE}" zlib_CFLAGS="-I${include_dir}" zlib_LIBS="-L${lib_dir} -l:libz.a" QT_QMAKE="${install_dir}/bin"
+./configure --prefix="${install_dir}" "${local_boost}" --disable-gui --disable-qt-dbus --host=arm-linux-musleabi CXXFLAGS="${CXXFLAGS}" CPPFLAGS="${CPPFLAGS}" LDFLAGS="${LDFLAGS} -l:libboost_system.a" openssl_CFLAGS="-I${include_dir}" openssl_LIBS="-L${lib_dir} -l:libcrypto.a -l:libssl.a" libtorrent_CFLAGS="-I${include_dir}" libtorrent_LIBS="-L${lib_dir} -l:${LIBTORRENT_STATIC_FILE}" zlib_CFLAGS="-I${include_dir}" zlib_LIBS="-L${lib_dir} -l:libz.a" QT_QMAKE="${install_dir}/bin"
 sed -i 's/-lboost_system//; s/-lcrypto//; s/-lssl//' conf.pri
 make -j$(nproc) VERBOSE=1 all
 cp src/qbittorrent-nox "${result_dir}/arm-qbittorrent-nox-${QBITTORRENT_TAG}"
-arm-linux-musl-strip "${result_dir}/arm-qbittorrent-nox-${QBITTORRENT_TAG}"
+arm-linux-musleabi-strip "${result_dir}/arm-qbittorrent-nox-${QBITTORRENT_TAG}"
 file "${result_dir}/arm-qbittorrent-nox-${QBITTORRENT_TAG}"
+tar czvf ${result_dir}/arm-qbittorrent-nox-${QBITTORRENT_TAG}.tar.gz
 echo "Copy ${result_dir}/arm-qbittorrent-nox-${QBITTORRENT_TAG} to you arm device and test it."
